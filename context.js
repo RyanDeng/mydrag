@@ -1,51 +1,56 @@
-// var greeting = "hola, ";
-// var button = document.getElementById("su");
+/**
+   sensitivity变量表示的是拖曳的灵敏度，数字越小越灵敏
+   */ 
 
-// button.addEventListener("click", function() {
-//   alert(greeting + ".");
-// }, false);
-// document.onmousedown=function(){
-//     alert("aaa");
-// };
-var kw=document.getElementById("kw");
-document.ondrag = function(e){
-    
-        //kw.value+="drag"
-    
-}
-// document.ondblclick = function(e){
-//     //var selectobj = document.selection.createRange();
-//     var selectstr = document.getSelection();
-//     alert(selectstr);
-// }
-document.ondragend =function(e){
-    //kw.value+="end,"
-    searchtxt=e.dataTransfer.getData("Text");
-    alert(searchtxt);
-    window.open(searchtxt);
-}
 
+var selectstr
+var originX
+var originY
+var sensitivity=20
 
 document.ondragstart = function(e){
-    // var selectobj = document.selection.createRange();
-    // var selectstr = selectobj.text;
-    // alet(selectstr);
-    var selectstr = document.getSelection();
-    kw.value+=selectstr;
-    e.dataTransfer.setData("Text",selectstr);
+    selectstr = document.getSelection();
+    originX=e.clientX
+    originY=e.clientY
+
 }
-document.ondrag = function(e){
-    //kw.value+="drag,"
-}
-document.ondrop = function(e){
-    kw.value+="drop,"
+
+document.ondragend =function(e){
+    var result=toWhichWay(e.clientX,e.clientY);
+    if (result==1) {
+        window.open(googleSearchText(selectstr));
+    }else if(result==2){
+        window.open(doubanSearchText(selectstr));
+    }else if (result==3) {
+        window.open(icibaSearchText(selectstr));
+    }
 }
 
 
-
-document.onmousemove = function(e){
-        //div.innerText = '('+e.pageX +', '+e.pageY+')';
+function googleSearchText(str){
+    var t1="https://www.google.com.hk/search?q=";
+    var t2="&aq=";
+    var t3="&aqs=chrome.0.57&sourceid=chrome&ie=UTF-8";
+    return t1+str+t2+str+t3;
 }
-document.onmouseup = function(e){
-            //window.open("www.baidu.com");
+function doubanSearchText(str){
+    var t1="http://movie.douban.com/subject_search?search_text="
+    var t2="&cat=1002"
+    return t1+str+t2;
+}
+function icibaSearchText(str){
+    return "http://www.iciba.com/search?s="+str;
+}
+
+function toWhichWay(x,y){
+    if (x > (originX+sensitivity) && y < (originY-sensitivity)) {
+        return 1;
+    }
+    else if(x > (originX+sensitivity) && y > (originY+sensitivity)){
+        return 3;
+    }
+    else if(x< (originX-sensitivity)){
+        return 2;
+    }
+    return 4;
 }
