@@ -16,6 +16,7 @@ document.ondragstart = function(e){
 }
 
 document.ondragend =function(e){
+    document.body.style.cursor="default"
     var result=toWhichWay(e.clientX,e.clientY);
     if (result==1) {
         window.open(googleSearchText(selectstr));
@@ -28,7 +29,7 @@ document.ondragend =function(e){
     }
 }
 document.ondrag = function(e){
-    document.style.cursor=""
+    document.body.style.cursor="move"
 }
 
 function googleSearchText(str){
