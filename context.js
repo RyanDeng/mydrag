@@ -23,15 +23,17 @@ document.ondragend =function(e){
         window.open(doubanSearchText(selectstr));
     }else if (result==3) {
         window.open(icibaSearchText(selectstr));
+    }else if(result==4){
+        window.open(weiboSearchText(selectstr));
     }
 }
-
+document.ondrag = function(e){
+    document.style.cursor=""
+}
 
 function googleSearchText(str){
     var t1="https://www.google.com.hk/search?q=";
-    var t2="&aq=";
-    var t3="&aqs=chrome.0.57&sourceid=chrome&ie=UTF-8";
-    return t1+str+t2+str+t3;
+    return t1+str;
 }
 function doubanSearchText(str){
     var t1="http://movie.douban.com/subject_search?search_text="
@@ -41,7 +43,13 @@ function doubanSearchText(str){
 function icibaSearchText(str){
     return "http://www.iciba.com/search?s="+str;
 }
-
+function weiboSearchText(str){
+    return "http://s.weibo.com/weibo/"+str;
+}
+function iaskSearchText(str){
+    var t1="http://iask.sina.com.cn/search_engine/search_knowledge_engine.php?key="
+    return t1+encodeURI(str);
+}
 function toWhichWay(x,y){
     if (x > (originX+sensitivity) && y < (originY-sensitivity)) {
         return 1;
@@ -49,8 +57,11 @@ function toWhichWay(x,y){
     else if(x > (originX+sensitivity) && y > (originY+sensitivity)){
         return 3;
     }
-    else if(x< (originX-sensitivity)){
+    else if(x< (originX-sensitivity) && y < (originY-sensitivity)){
         return 2;
     }
-    return 4;
+    else if(x < (originX-sensitivity) && y > (originY+sensitivity)){
+        return 4;
+    }
+    return 5;
 }
