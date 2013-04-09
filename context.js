@@ -21,14 +21,17 @@ document.ondragstart = function(e){
 
 document.ondragend =function(e){
     inDragProc=false;
+    document.body.style.cursor="auto"
+
     if(isDrop==true){
         isDrop=false;
         return;
     }
 
     selectStr=selectObj.toString()
-     if (selectStr=="") {return;}
-    document.body.style.cursor="default"
+     if (selectStr=="") {
+        return;
+    }
 
     var result=toWhichWay(e.clientX,e.clientY);
     if (result==1) {
@@ -45,9 +48,7 @@ document.ondrop = function(e){
     isDrop=true;
 }
 document.ondrag = function(e){
-    //var kw=document.getElementById("kw");
-    //kw.value+="sta";
-    //document.getSelection().style.cursor="text";
+
 }
 
 function googleSearchText(str){
