@@ -3,33 +3,51 @@
    */ 
 
 
-var selectstr
+var selectObj
 var originX
 var originY
 var sensitivity=20
+var inDragProc=false;
+var isDrop=false;
 
 document.ondragstart = function(e){
-    selectstr = document.getSelection();
+    selectObj = document.getSelection();
+    inDragProc=true;
+    isDrop=false;
     originX=e.clientX
     originY=e.clientY
 
 }
 
 document.ondragend =function(e){
+    inDragProc=false;
+    if(isDrop==true){
+        isDrop=false;
+        return;
+    }
+
+    selectStr=selectObj.toString()
+     if (selectStr=="") {return;}
     document.body.style.cursor="default"
+
     var result=toWhichWay(e.clientX,e.clientY);
     if (result==1) {
-        window.open(googleSearchText(selectstr));
+        window.open(googleSearchText(selectStr));
     }else if(result==2){
-        window.open(doubanSearchText(selectstr));
+        window.open(doubanSearchText(selectStr));
     }else if (result==3) {
-        window.open(icibaSearchText(selectstr));
+        window.open(icibaSearchText(selectStr));
     }else if(result==4){
-        window.open(weiboSearchText(selectstr));
+        window.open(weiboSearchText(selectStr));
     }
 }
+document.ondrop = function(e){
+    isDrop=true;
+}
 document.ondrag = function(e){
-    document.body.style.cursor="move"
+    //var kw=document.getElementById("kw");
+    //kw.value+="sta";
+    //document.getSelection().style.cursor="text";
 }
 
 function googleSearchText(str){
